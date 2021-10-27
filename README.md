@@ -28,6 +28,22 @@ jobs:
 By default ESP-IDF will build for the esp32, if you want to build for different
 ESP32 types use the following notation in the GitHub action:
 
+
+```
+    name: Build firmware
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: build
+      uses: espressif/esp-idf-ci-action@latest
+      with:
+        target: esp32c3
+        path: firmware
+```
+
+Or for multiple targets with a single code base:
+
 ```
     name: Build ${{ matrix.target }} firmware
     runs-on: ubuntu-latest
@@ -41,7 +57,7 @@ ESP32 types use the following notation in the GitHub action:
       uses: espressif/esp-idf-ci-action@latest
       with:
         target: ${{ matrix.target }}
-	      path: firmware
+        path: firmware
 ```
 
 Note that the above uses parallel build jobs, each job will have a dedicated
