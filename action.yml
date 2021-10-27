@@ -4,6 +4,9 @@ branding:
   color: red
   icon: wifi
 inputs:
+  target:
+    description: 'Defines the type of ESP32 to build for, supported types: esp32, esp32s2, esp32s3, esp32c3. When not specified the default is esp32.'
+    default: 'esp32'
   path:
     description: 'Relative path under $GITHUB_WORKSPACE to place the repository'
     default: ''
@@ -11,4 +14,4 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.path }}
+    - ${{ inputs.target }} ${{ inputs.path }}
