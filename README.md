@@ -43,6 +43,7 @@ List based on: https://hub.docker.com/r/espressif/idf/tags
 
 ```
 latest
+release-v4.4
 release-v4.3
 release-v4.2
 release-v4.1
