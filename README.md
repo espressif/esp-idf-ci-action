@@ -23,6 +23,49 @@ jobs:
         path: 'esp32-s2-hmi-devkit-1/examples/smart-panel'
 ```
 
+## How to specify the ESP-IDF build target
+
+By default ESP-IDF will build for the esp32, if you want to build for different
+ESP32 types use the following notation in the GitHub action:
+
+
+```
+    name: Build firmware
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: build
+      uses: espressif/esp-idf-ci-action@latest
+      with:
+        target: esp32c3
+        path: firmware
+```
+
+Or for multiple targets with a single code base:
+
+```
+    name: Build ${{ matrix.target }} firmware
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [esp32, esp32c3, esp32s2]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: build
+      uses: espressif/esp-idf-ci-action@latest
+      with:
+        target: ${{ matrix.target }}
+        path: firmware
+```
+
+Note that the above uses parallel build jobs, each job will have a dedicated
+copy of the source code and build directory. If parallel jobs are not used and
+only one copy of source code and a single build directory is used, the build
+directory must be removed before invoking a build for a different ESP32 type
+otherwise the build may fail due to `idf.py set-target` reporting a failure.
+
 ## How to specify a custom version of ESP-IDF
 
 GitHub does not support the specification of the Docker image tag as a variable.
