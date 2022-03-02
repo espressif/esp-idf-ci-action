@@ -12,9 +12,13 @@ inputs:
     description: 'Version of ESP-IDF docker image to use'
     default: 'latest'
     required: false
+  esp_target:
+    description: 'ESP32 variant to build for'
+    default: 'esp32'
+    required: false
 
 runs:
   using: "composite"
   steps:
-    - run: docker run -t -v "${GITHUB_WORKSPACE}/${{ inputs.path }}:/app" -w=/app espressif/idf:${{ inputs.esp_idf_version }} idf.py build
+    - run: docker run -t -e CONFIG_IDF_TARGET="${{ inputs.esp_target }}" -v "${GITHUB_WORKSPACE}/${{ inputs.path }}:/app" -w=/app espressif/idf:${{ inputs.esp_idf_version }} idf.py build
       shell: bash
