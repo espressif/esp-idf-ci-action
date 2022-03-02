@@ -26,7 +26,7 @@ jobs:
       uses: espressif/esp-idf-ci-action@main
       with:
         esp_idf_version: v4.4
-	esp_target: esp32s2
+        esp_target: esp32s2
         path: 'esp32-s2-hmi-devkit-1/examples/smart-panel'
 ```
 
