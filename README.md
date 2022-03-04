@@ -21,12 +21,7 @@ jobs:
       uses: espressif/esp-idf-ci-action@main
       with:
         esp_idf_version: v4.4
-        path: 'esp32-s2-hmi-devkit-1/examples/smart-panel'
-    - name: esp-idf build
-      uses: espressif/esp-idf-ci-action@main
-      with:
-        esp_idf_version: v4.4
-        esp_target: esp32s2
+        target: esp32s2
         path: 'esp32-s2-hmi-devkit-1/examples/smart-panel'
 ```
 
@@ -44,7 +39,7 @@ It must be one of the tags from Docker Hub: https://hub.docker.com/r/espressif/i
 
 More information about supported versions of ESP-IDF: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/versions.html#support-periods
 
-### `esp_target`
+### `target`
 
 Type of ESP32 to build for. Default value `esp32`.
 
