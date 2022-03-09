@@ -22,5 +22,5 @@ runs:
   steps:
     - run: |
         export IDF_TARGET=$(echo "${{ inputs.target }}" | tr '[:upper:]' '[:lower:]' | tr -d '_-') 
-        docker run -t -e IDF_TARGET="${IDF_TARGET}" -v "${GITHUB_WORKSPACE}/${{ inputs.path }}:/app" -w=/app espressif/idf:${{ inputs.esp_idf_version }} idf.py build
+        docker run -t -e IDF_TARGET="${IDF_TARGET}" -v "${GITHUB_WORKSPACE}:/app" -w "/app/${{ inputs.path }}" espressif/idf:${{ inputs.esp_idf_version }} idf.py build
       shell: bash
