@@ -1,5 +1,5 @@
 name: "Espressif IoT Development Framework (ESP-IDF)"
-description: "This action build your firmware for ESP32 directly in GitHub using Espressif ESP-IDF Docker image."
+description: "This action builds your firmware for ESP32 directly in GitHub using Espressif ESP-IDF Docker image."
 branding:
   color: red
   icon: wifi
@@ -16,8 +16,8 @@ inputs:
     description: 'ESP32 variant to build for'
     default: 'esp32'
     required: false
-  action:
-    description: 'Action to run inside the docker container (default: builds the project)'
+  command:
+    description: 'Command to run inside the docker container (default: builds the project)'
     default: 'idf.py build'
     required: false
 
@@ -26,5 +26,5 @@ runs:
   steps:
     - run: |
         export IDF_TARGET=$(echo "${{ inputs.target }}" | tr '[:upper:]' '[:lower:]' | tr -d '_-') 
-        docker run -t -e IDF_TARGET="${IDF_TARGET}" -v "${GITHUB_WORKSPACE}:/app" -w "/app/${{ inputs.path }}" espressif/idf:${{ inputs.esp_idf_version }} ${{ inputs.action }}
+        docker run -t -e IDF_TARGET="${IDF_TARGET}" -v "${GITHUB_WORKSPACE}:/app" -w "/app/${{ inputs.path }}" espressif/idf:${{ inputs.esp_idf_version }} ${{ inputs.command }}
       shell: bash

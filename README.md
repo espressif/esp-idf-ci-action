@@ -45,7 +45,7 @@ Type of ESP32 to build for. Default value `esp32`.
 
 The value must be one of the supported ESP-IDF targets as documented here: https://github.com/espressif/esp-idf#esp-idf-release-and-soc-compatibility
 
-### `action`
+### `command`
 
 Optional: Specify the command that will run as part of this GitHub build step.
 
@@ -54,5 +54,5 @@ Default: `idf.py build`
 Overriding this is useful for running other commands via github actions. Example:
 
 ```yaml
-   action: esptool.py merge_bin -o ../your_final_output.bin @flash_args 
+   command: esptool.py merge_bin -o ../your_final_output.bin @flash_args
 ```
