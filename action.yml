@@ -21,7 +21,7 @@ inputs:
     default: 'idf.py build'
     required: false
   signing_secret:
-    description: 'GitHub Actions Secret passed to the docker container to sing the binary by using the espsecure command'
+    description: 'GitHub Actions Secret passed to the docker container to sing the binary by using the espsecure.py command'
     required: false
 
 runs:
