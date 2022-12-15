@@ -20,11 +20,14 @@ inputs:
     description: 'Command to run inside the docker container (default: builds the project)'
     default: 'idf.py build'
     required: false
+  signing_secret:
+    description: 'GitHub Actions Secret passed to the docker container to sing the binary by using the espsecure command'
+    required: false
 
 runs:
   using: "composite"
   steps:
     - run: |
         export IDF_TARGET=$(echo "${{ inputs.target }}" | tr '[:upper:]' '[:lower:]' | tr -d '_-') 
-        docker run -t -e IDF_TARGET="${IDF_TARGET}" -v "${GITHUB_WORKSPACE}:/app/${{ github.repository }}" -w "/app/${{ github.repository }}/${{ inputs.path }}" espressif/idf:${{ inputs.esp_idf_version }} ${{ inputs.command }}
+        docker run -t -e IDF_TARGET="${IDF_TARGET}" -e SIGNING_SECRET="${{ inputs.signing_secret }}" -v "${GITHUB_WORKSPACE}:/app/${{ github.repository }}" -w "/app/${{ github.repository }}/${{ inputs.path }}" espressif/idf:${{ inputs.esp_idf_version }} ${{ inputs.command }}
       shell: bash
