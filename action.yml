@@ -16,6 +16,10 @@ inputs:
     description: "Docker Repository to obtain the ESP-IDF image from"
     default: "espressif/idf"
     required: false
+  additional_args:
+    description: "Additional arguments to pass to the docker run command"
+    default: ""
+    required: false
   target:
     description: "ESP32 variant to build for"
     default: "esp32"
@@ -30,7 +34,11 @@ runs:
   steps:
     - run: |
         export IDF_TARGET=$(echo "${{ inputs.target }}" | tr '[:upper:]' '[:lower:]' | tr -d '_-')
-        docker run -t -e IDF_TARGET="${IDF_TARGET}" -v "${GITHUB_WORKSPACE}:/app/${{ github.repository }}" \
-        -w "/app/${{ github.repository }}/${{ inputs.path }}" ${{ inputs.esp_idf_root }}:${{ inputs.esp_idf_version }} \
+        docker run -t \
+        -e IDF_TARGET="${IDF_TARGET}" \
+        -v "${GITHUB_WORKSPACE}:/app/${{ github.repository }}" \
+        -w "/app/${{ github.repository }}/${{ inputs.path }}" \
+        ${{ inputs.additional_args }} \
+        ${{ inputs.esp_idf_root }}:${{ inputs.esp_idf_version }} \
         /bin/bash -c 'git config --global --add safe.directory "*" && ${{ inputs.command }}'
       shell: bash
