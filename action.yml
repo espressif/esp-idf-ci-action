@@ -16,6 +16,15 @@ inputs:
     description: "Docker Repository to obtain the ESP-IDF image from"
     default: "espressif/idf"
     required: false
+  caching:
+    description: "Enable caching of the ESP-IDF docker image"
+    default: false
+    required: false
+    type: boolean
+  caching_prefix:
+    description: "Prefix for the cache key"
+    default: "cache-docker-idf"
+    required: false
   target:
     description: "ESP32 variant to build for"
     default: "esp32"
@@ -28,6 +37,28 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Restore ESP-IDF Image Cache if it exists
+      id: cache-docker-idf
+      if: inputs.caching == 'true'
+      uses: actions/cache@v3
+      with:
+        path: ci/cache/docker/idf
+        key: ${{ inputs.caching_prefix }}-${{ inputs.esp_idf_version }}
+        restore-keys: ${{ inputs.caching_prefix }}-${{ inputs.esp_idf_version }}
+
+    - name: Update ESP-IDF Image Cache if cache miss
+      if: inputs.caching == 'true' && steps.cache-docker-idf.outputs.cache-hit != 'true'
+      run: |
+        docker pull ${{ inputs.esp_idf_root }}:${{ inputs.esp_idf_version }}
+        mkdir -p ci/cache/docker/idf
+        docker image save ${{ inputs.esp_idf_root }}:${{ inputs.esp_idf_version }} --output ci/cache/docker/idf/idf-image.tar
+      shell: bash
+
+    - name: Use ESP-IDF Image Cache if cache hit
+      if: inputs.caching == 'true' && steps.cache-docker-idf.outputs.cache-hit == 'true'
+      run: docker image load --input ci/cache/docker/idf/idf-image.tar
+      shell: bash
+
     - run: |
         export IDF_TARGET=$(echo "${{ inputs.target }}" | tr '[:upper:]' '[:lower:]' | tr -d '_-')
         docker run -t -e IDF_TARGET="${IDF_TARGET}" -v "${GITHUB_WORKSPACE}:/app/${{ github.repository }}" \
