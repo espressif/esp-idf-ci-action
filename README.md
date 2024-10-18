@@ -43,6 +43,26 @@ It must be one of the tags from Docker Hub: https://hub.docker.com/r/espressif/i
 
 More information about supported versions of ESP-IDF: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/versions.html#support-periods
 
+### `esp_idf_docker_image`
+
+The base image for the docker container to run. Default value `espressif/idf`
+
+If using a modified or self-hosted version of the IDF. The `esp_idf_version` will still be used to specify the tag of the docker image, so setting both can be used to directly specify which docker image to use.
+
+### `extra_docker_args`
+
+Additional parameters to pass to the docker run command. Default value is no additional command (empty).
+
+The argument is passed directly to the docke run command, just before the specification of the docker image.
+
+Can be used to add additional volumes and environment variables to the container, like having a ccache directory to speed up recompilation (needs ccache to be installed in the specified docker image and make sure to have ccache folder available on host device). Example:
+
+```yaml
+extra_docker_args: -v ./.ccache:/root/.ccache -e CCACHE_DIR=/root/.ccache
+```
+
+More information about parameters for docker run: https://docs.docker.com/reference/cli/docker/container/run/
+
 ### `target`
 
 Type of ESP32 to build for. Default value `esp32`.
