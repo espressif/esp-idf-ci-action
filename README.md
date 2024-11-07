@@ -1,20 +1,21 @@
 # esp-idf-ci-action
 
-GitHub Action for ESP32 CI
+This GitHub action helps to build ESP-IDF projects for the Espressif ESP32 family of chips.
+
+Under the hood, it wraps the official [ESP-IDF docker image](https://hub.docker.com/r/espressif/idf) and uses Docker to execute ESP-IDF commands within a containerized environment. Therefore, it must run on a runner that supports Linux Docker containers. We recommend using `ubuntu-latest` on GitHub-hosted runner.
 
 ## Usage
 
-Workflow definition
+An example workflow to build an ESP-IDF project:
 
 ```
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: 'recursive'
     - name: esp-idf build
